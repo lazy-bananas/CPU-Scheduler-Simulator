@@ -63,7 +63,10 @@ export function drawProcessCharts(processes, gantt) {
     processes.forEach(p => {
         const chart = document.createElement("div");
         chart.className = "process-chart";
-        chart.style.setProperty("--process-color", getProcessColor(p.pid));
+        const color = getProcessColor(p.pid);
+        chart.style.setProperty("--process-color", color.base);
+        chart.style.setProperty("--process-color-soft", color.soft);
+        chart.style.setProperty("--process-color-dark-soft", color.darkSoft);
 
         const label = document.createElement("div");
         label.className = "process-label";
@@ -127,16 +130,16 @@ function getColorIndex(pid) {
 
 function getProcessColor(pid) {
     const colors = [
-        "#ff6b6b",
-        "#51cf66",
-        "#339af0",
-        "#fcc419",
-        "#ae3ec9",
-        "#ff922b",
-        "#20c997",
-        "#fa5252",
-        "#748ffc",
-        "#f06595"
+        { base: "#ff6b6b", soft: "rgba(255, 107, 107, 0.12)", darkSoft: "rgba(255, 107, 107, 0.18)" },
+        { base: "#51cf66", soft: "rgba(81, 207, 102, 0.12)", darkSoft: "rgba(81, 207, 102, 0.18)" },
+        { base: "#339af0", soft: "rgba(51, 154, 240, 0.12)", darkSoft: "rgba(51, 154, 240, 0.18)" },
+        { base: "#fcc419", soft: "rgba(252, 196, 25, 0.14)", darkSoft: "rgba(252, 196, 25, 0.2)" },
+        { base: "#ae3ec9", soft: "rgba(174, 62, 201, 0.12)", darkSoft: "rgba(174, 62, 201, 0.2)" },
+        { base: "#ff922b", soft: "rgba(255, 146, 43, 0.13)", darkSoft: "rgba(255, 146, 43, 0.19)" },
+        { base: "#20c997", soft: "rgba(32, 201, 151, 0.12)", darkSoft: "rgba(32, 201, 151, 0.18)" },
+        { base: "#fa5252", soft: "rgba(250, 82, 82, 0.12)", darkSoft: "rgba(250, 82, 82, 0.18)" },
+        { base: "#748ffc", soft: "rgba(116, 143, 252, 0.12)", darkSoft: "rgba(116, 143, 252, 0.19)" },
+        { base: "#f06595", soft: "rgba(240, 101, 149, 0.12)", darkSoft: "rgba(240, 101, 149, 0.19)" }
     ];
 
     return colors[getColorIndex(pid) - 1];

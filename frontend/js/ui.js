@@ -104,12 +104,25 @@ function displayComparisonResult(data) {
     data.forEach(item => {
         table.innerHTML += `
             <tr>
-                <td>${item.algorithm.toUpperCase()}</td>
+                <td>${getAlgorithmLabel(item.algorithm)}</td>
                 <td>${item.avg_waiting_time.toFixed(2)}</td>
                 <td>${item.avg_turnaround_time.toFixed(2)}</td>
             </tr>
         `;
     });
+}
+
+function getAlgorithmLabel(algorithm) {
+    const labels = {
+        fcfs: "FCFS",
+        sjf: "SJF (Non-Preemptive)",
+        srtf: "SJF (Preemptive)",
+        nonpre_prior: "Priority (Non-Preemptive)",
+        pre_prior: "Priority (Preemptive)",
+        round_robin: "Round Robin"
+    };
+
+    return labels[algorithm] || algorithm;
 }
 
 function displayResult(data) {
