@@ -1,4 +1,4 @@
-import { fetchSchedule } from './api.js';
+import { fetchComparison, fetchSchedule } from './api.js';
 import { drawGantt, drawProcessCharts } from './charts.js';
 
 let pidCounter = 1;
