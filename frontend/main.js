@@ -1,4 +1,4 @@
-import { addRow, calculate, compareAll, clearTable, toggleTheme, initKeyboardNav } from './js/ui.js';
+import { addRow, calculate, compareAll, clearTable, toggleTheme, initKeyboardNav } from './ui.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     // Event Listeners
