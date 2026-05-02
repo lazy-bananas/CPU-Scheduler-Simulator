@@ -1,5 +1,5 @@
 def priority_non_preemptive(processes):
-    processes = sorted(processes, key=lambda x: x["arrival"])
+    processes = sorted(processes, key=lambda x: (x["arrival"], x["pid"]))
     
     n = len(processes)
     completed = []
@@ -18,8 +18,8 @@ def priority_non_preemptive(processes):
             current_time += 1
             continue
         
-        # select highest priority (lowest number)
-        ready_queue.sort(key=lambda x: x["priority"])
+        # select highest priority (lowest number), break ties with PID
+        ready_queue.sort(key=lambda x: (x["priority"], x["pid"]))
         p = ready_queue.pop(0)
         
         start = current_time

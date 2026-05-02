@@ -30,26 +30,42 @@ export function toggleTheme() {
     btn.innerText = document.body.classList.contains("dark") ? "Light Mode" : "Dark Mode";
 }
 
-export async function calculate() {
+function getProcessesFromTable() {
     const rows = document.querySelectorAll("#tableBody tr");
     const processes = [];
 
     rows.forEach((row, index) => {
         const inputs = row.querySelectorAll("input");
+        const pid = parseInt(row.cells[0].innerText);
         const arrival = parseInt(inputs[0].value);
         const burst = parseInt(inputs[1].value);
         const priority = parseInt(inputs[2].value);
 
         if (isNaN(arrival) || isNaN(burst) || arrival < 0 || burst <= 0) {
-            alert(`Invalid input in row ${index + 1}`);
-            throw new Error("Invalid input");
+            throw new Error(`Invalid input in row ${index + 1}. Please ensure Arrival >= 0 and Burst > 0.`);
         }
 
-        processes.push({ pid: index + 1, arrival, burst, priority: priority || 0 });
+        processes.push({ 
+            pid: pid, 
+            arrival: arrival, 
+            burst: burst, 
+            priority: isNaN(priority) ? 0 : priority 
+        });
     });
+    return processes;
+}
+
+export async function calculate() {
+    let processes;
+    try {
+        processes = getProcessesFromTable();
+    } catch (err) {
+        alert(err.message);
+        return;
+    }
 
     const algo = document.getElementById("algorithm").value;
-    const quantum = parseInt(document.getElementById("quantum").value) || 0;
+    const quantum = parseInt(document.getElementById("quantum").value) || 2;
 
     if (algo === "round_robin" && quantum <= 0) {
         alert("Please enter a valid time quantum for Round Robin.");
@@ -65,18 +81,13 @@ export async function calculate() {
 }
 
 export async function compareAll() {
-    const rows = document.querySelectorAll("#tableBody tr");
-    const processes = [];
-
-    rows.forEach((row, index) => {
-        const inputs = row.querySelectorAll("input");
-        processes.push({ 
-            pid: index + 1, 
-            arrival: parseInt(inputs[0].value) || 0, 
-            burst: parseInt(inputs[1].value) || 1, 
-            priority: parseInt(inputs[2].value) || 1 
-        });
-    });
+    let processes;
+    try {
+        processes = getProcessesFromTable();
+    } catch (err) {
+        alert(err.message);
+        return;
+    }
 
     const quantum = parseInt(document.getElementById("quantum").value) || 2;
 

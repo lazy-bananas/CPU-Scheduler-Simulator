@@ -1,5 +1,5 @@
 def sjf_preemptive(processes):
-    processes = sorted(processes, key=lambda x: x["arrival"])
+    processes = sorted(processes, key=lambda x: (x["arrival"], x["pid"]))
     
     n = len(processes)
     remaining = {p["pid"]: p["burst"] for p in processes}
@@ -11,17 +11,15 @@ def sjf_preemptive(processes):
     last_pid = -1
 
     while completed < n:
-        # get available processes
         available = [p for p in processes if p["arrival"] <= current_time and remaining[p["pid"]] > 0]
         
         if not available:
             current_time += 1
             continue
         
-        # pick process with minimum remaining time
-        p = min(available, key=lambda x: remaining[x["pid"]])
+        # pick process with minimum remaining time, break ties with PID
+        p = min(available, key=lambda x: (remaining[x["pid"]], x["pid"]))
         
-        # gantt handling (merge continuous blocks)
         if last_pid != p["pid"]:
             gantt.append({
                 "pid": p["pid"],
@@ -33,7 +31,6 @@ def sjf_preemptive(processes):
         
         last_pid = p["pid"]
         
-        # execute for 1 unit
         remaining[p["pid"]] -= 1
         current_time += 1
         

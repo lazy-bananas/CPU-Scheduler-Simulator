@@ -1,7 +1,7 @@
 from collections import deque
 
 def round_robin(processes, quantum):
-    processes = sorted(processes, key=lambda x: x["arrival"])
+    processes = sorted(processes, key=lambda x: (x["arrival"], x["pid"]))
     
     n = len(processes)
     remaining = {p["pid"]: p["burst"] for p in processes}

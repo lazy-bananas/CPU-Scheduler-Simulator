@@ -1,5 +1,5 @@
 def priority_preemptive(processes):
-    processes = sorted(processes, key=lambda x: x["arrival"])
+    processes = sorted(processes, key=lambda x: (x["arrival"], x["pid"]))
     
     n = len(processes)
     remaining = {p["pid"]: p["burst"] for p in processes}
@@ -11,7 +11,6 @@ def priority_preemptive(processes):
     last_pid = -1
 
     while completed < n:
-        # get available processes
         available = [
             p for p in processes
             if p["arrival"] <= current_time and remaining[p["pid"]] > 0
@@ -21,10 +20,9 @@ def priority_preemptive(processes):
             current_time += 1
             continue
         
-        # pick highest priority (lowest value)
-        p = min(available, key=lambda x: x["priority"])
+        # pick highest priority (lowest value), break ties with PID
+        p = min(available, key=lambda x: (x["priority"], x["pid"]))
         
-        # gantt merging
         if last_pid != p["pid"]:
             gantt.append({
                 "pid": p["pid"],
@@ -36,7 +34,6 @@ def priority_preemptive(processes):
         
         last_pid = p["pid"]
         
-        # execute 1 unit
         remaining[p["pid"]] -= 1
         current_time += 1
         

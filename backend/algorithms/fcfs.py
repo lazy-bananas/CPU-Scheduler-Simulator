@@ -1,5 +1,5 @@
 def fcfs(processes):
-    processes = sorted(processes, key=lambda p: p['arrival'])
+    processes = sorted(processes, key=lambda p: (p['arrival'], p['pid']))
 
     current_time = 0
     gantt=[]

@@ -1,5 +1,5 @@
 def sjf_non_preemptive(processes):
-    processes = sorted(processes, key=lambda x: (x["arrival"], x["burst"]))
+    processes = sorted(processes, key=lambda x: (x["arrival"], x["burst"], x["pid"]))
     
     n = len(processes)
     completed = []
@@ -17,7 +17,7 @@ def sjf_non_preemptive(processes):
             current_time += 1
             continue
         
-        ready_queue.sort(key=lambda x: x["burst"])
+        ready_queue.sort(key=lambda x: (x["burst"], x["pid"]))
         p = ready_queue.pop(0)
         
         start = current_time
